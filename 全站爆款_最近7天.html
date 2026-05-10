@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公众号爆款数据分析报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 16px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .report-header {
+            background: linear-gradient(135deg, #07c160 0%, #1aad19 100%);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .report-header h1 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .report-header .keyword {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        .card-title-row {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .card-index {
+            font-size: 15px;
+            font-weight: 700;
+            color: #07c160;
+            min-width: 20px;
+        }
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: color 0.2s;
+        }
+        .card-title:hover {
+            color: #07c160;
+        }
+        .card-meta {
+            font-size: 13px;
+            color: #999;
+            padding: 8px 0;
+        }
+        .author-link {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .author-link:hover {
+            color: #07c160;
+        }
+        .meta-divider {
+            margin: 0 6px;
+        }
+        .pub-time {
+            color: #999;
+        }
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            margin: 0 -16px;
+            background: linear-gradient(135deg, #f0f9f4, #fff);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .interaction-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: #07c160;
+        }
+        .read-count {
+            font-size: 12px;
+            color: #666;
+        }
+        .category-tag {
+            font-size: 12px;
+            color: #1aad19;
+            background: #e8f8ed;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .view-note-btn {
+            color: #07c160;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        .view-note-btn:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+        .data-note {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 20px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-header">
+            <h1>公众号爆款数据分析报告</h1>
+            <div class="keyword">关键词： | 时间范围：近7天</div>
+        </div>
+        
+        <div class="card-grid">
+            
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">1.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzkzMjg3MTcwNQ==&amp;mid=2247488246&amp;idx=1&amp;sn=3a38e9a9c3da5f155225991c40df2787#rd" class="card-title" target="_blank" rel="noopener noreferrer">这个五一，你去看“人山人海”了吗？</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=gh_ebc0a4429ede" class="author-link" target="_blank" rel="noopener noreferrer">芊越心空间</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月3日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">低粉高阅读</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzkzMjg3MTcwNQ==&amp;mid=2247488246&amp;idx=1&amp;sn=3a38e9a9c3da5f155225991c40df2787#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">2.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzI0NDU5OTAzMA==&amp;mid=2247610316&amp;idx=1&amp;sn=9774719144044e12c84e43d2d9b77877#rd" class="card-title" target="_blank" rel="noopener noreferrer">A股收评：超3600只个股飘红，三大指数集体收跌；航天军工大涨，锂电、GPU概念领跌</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=jwview" class="author-link" target="_blank" rel="noopener noreferrer">中新经纬</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月8日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">阅读靠前</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzI0NDU5OTAzMA==&amp;mid=2247610316&amp;idx=1&amp;sn=9774719144044e12c84e43d2d9b77877#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">3.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=Mzk0NTQwMTA2Ng==&amp;mid=2247496728&amp;idx=1&amp;sn=299bd606bf41083675108814a0a97893#rd" class="card-title" target="_blank" rel="noopener noreferrer">与侠相会丨李云霄绫鼓踏歌入江湖</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=gh_24c9fc1f9430" class="author-link" target="_blank" rel="noopener noreferrer">燕云十六声</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月4日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">原创靠前</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=Mzk0NTQwMTA2Ng==&amp;mid=2247496728&amp;idx=1&amp;sn=299bd606bf41083675108814a0a97893#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">4.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MTgwNTE3Mjg2MA==&amp;mid=2652761904&amp;idx=2&amp;sn=c15ad6f2fc185a328fe0c13881b75dc8#rd" class="card-title" target="_blank" rel="noopener noreferrer">五一连水底都堵！</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=lengtoo" class="author-link" target="_blank" rel="noopener noreferrer">冷兔</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月5日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 9w+阅读</span>
+                <span class="category-tag">数据增长中</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MTgwNTE3Mjg2MA==&amp;mid=2652761904&amp;idx=2&amp;sn=c15ad6f2fc185a328fe0c13881b75dc8#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">5.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzkxMzI2NjEyMQ==&amp;mid=2247494806&amp;idx=1&amp;sn=09807faf69e1dd3759d266437c1bc425#rd" class="card-title" target="_blank" rel="noopener noreferrer">Model X最后一辆下线，员工在车身上签满名字：做成车衣会很有意义！</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=zhixi233333" class="author-link" target="_blank" rel="noopener noreferrer">特友爱车主</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月3日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">低粉高阅读</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzkxMzI2NjEyMQ==&amp;mid=2247494806&amp;idx=1&amp;sn=09807faf69e1dd3759d266437c1bc425#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">6.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzAwMDE2Nzk1OQ==&amp;mid=2650753436&amp;idx=1&amp;sn=035fc7b1fcdb7db588cc153bcf6203a3#rd" class="card-title" target="_blank" rel="noopener noreferrer">张国清去浏阳爆炸现场了，他强调了这些事情！为啥爆炸威力这么大？有四个没想到</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=Safety-T" class="author-link" target="_blank" rel="noopener noreferrer">安全生产技术</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月6日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">阅读靠前</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzAwMDE2Nzk1OQ==&amp;mid=2650753436&amp;idx=1&amp;sn=035fc7b1fcdb7db588cc153bcf6203a3#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">7.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzU0MjA4MjkxNQ==&amp;mid=2247548537&amp;idx=1&amp;sn=8a891fbcf9a89aea509c49e30238e3d6#rd" class="card-title" target="_blank" rel="noopener noreferrer">美国要掀桌子了，特朗普准备全球抢劫，留给我们的时间不多了</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=iamhtd" class="author-link" target="_blank" rel="noopener noreferrer">一个坏土豆</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月4日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">原创靠前</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzU0MjA4MjkxNQ==&amp;mid=2247548537&amp;idx=1&amp;sn=8a891fbcf9a89aea509c49e30238e3d6#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">8.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzAxMzk5MDc2OQ==&amp;mid=2247733322&amp;idx=1&amp;sn=d309074bcd691bdba1f944c6a11337ff#rd" class="card-title" target="_blank" rel="noopener noreferrer">震撼！竟然不是所有人都能吃蚕豆！可能严重到溶血死亡！</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=modunann" class="author-link" target="_blank" rel="noopener noreferrer">魔都囡</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月7日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 9w+阅读</span>
+                <span class="category-tag">数据增长中</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzAxMzk5MDc2OQ==&amp;mid=2247733322&amp;idx=1&amp;sn=d309074bcd691bdba1f944c6a11337ff#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">9.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzI5NjIwMzk2Mg==&amp;mid=2649839107&amp;idx=1&amp;sn=a5004bc34582cfbebb75fc2c97adc61c#rd" class="card-title" target="_blank" rel="noopener noreferrer">中国战士朱文海被日寇子弹击中的瞬间，看着太痛了！</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=luyu19988" class="author-link" target="_blank" rel="noopener noreferrer">鲁吁</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月6日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">低粉高阅读</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MzI5NjIwMzk2Mg==&amp;mid=2649839107&amp;idx=1&amp;sn=a5004bc34582cfbebb75fc2c97adc61c#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title-row">
+                <span class="card-index">10.</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MjM5OTk4ODUwMw==&amp;mid=2257522857&amp;idx=1&amp;sn=c7b655ca6369b2c0df002b5df7a824bf#rd" class="card-title" target="_blank" rel="noopener noreferrer">独家｜小米是联盟，俞浩是帝国</a>
+            </div>
+            <div class="card-meta">
+                <a href="https://open.weixin.qq.com/qr/code?username=nishu-think" class="author-link" target="_blank" rel="noopener noreferrer">倪叔的思考暗时间</a>
+                <span class="meta-divider">·</span>
+                <span class="pub-time">发布日期：5月5日</span>
+            </div>
+            <div class="card-stats">
+                <span class="read-count">📖 10w+阅读</span>
+                <span class="category-tag">阅读靠前</span>
+                <a href="https://mp.weixin.qq.com/s?__biz=MjM5OTk4ODUwMw==&amp;mid=2257522857&amp;idx=1&amp;sn=c7b655ca6369b2c0df002b5df7a824bf#rd" class="view-note-btn" target="_blank" rel="noopener noreferrer">查看作品 ↗</a>
+            </div>
+        </div>
+        
+        </div>
+        
+        <div class="data-note">
+            数据来源：公众号爆款文章查询，每日19点更新昨日热门内容<br>
+            备注：互动数据为入库快照，实时数据可能持续增长
+        </div>
+    </div>
+</body>
+</html>
