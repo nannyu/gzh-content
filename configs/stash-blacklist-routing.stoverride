@@ -1,10 +1,11 @@
-name: "Stash 国内直连 · 黑名单代理（修正版）"
+name: "Stash 国内直连 · 黑名单代理（轻量版）"
 desc: |-
   适用于 Stash 3.4.1；先关闭旧版覆写，仅启用本版。
   保留原订阅 DNS、节点和策略组；国内及未命中流量默认直连。
-  修复策略组未跟随自动优选的问题；手动节点统一在手动选择组设置。
+  轻量广告拦截，覆盖范围较原版收窄；闲置策略组跳过自动测速。
+  手动节点统一在手动选择组设置；服务组默认跟随主组。
 author: "Codex"
-version: "2026.09.06.2"
+version: "2026.09.06.3"
 
 mode: rule
 
@@ -14,9 +15,11 @@ mode: rule
 # Stash 3.4.1 实测：include-all 与 proxies 混用会丢失显式组引用，禁止混用。
 # 主组/服务组仅引用其他组；自动/手动组才使用 include-all。
 # 基础订阅必须有可用节点；Stash 会将完全没有节点的组视作 DIRECT。
+# 全部新增组启用 lazy，闲置时跳过自动测速；保留 600 秒周期与订阅原有测速设置。
 proxy-groups:
 - name: 黑名单 · 代理模式
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 自动优选
   - 黑名单 · 手动选择
@@ -27,59 +30,70 @@ proxy-groups:
   lazy: true
 - name: 黑名单 · 手动选择
   type: select
+  lazy: true
   include-all: true
 - name: 黑名单 · AI开发
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · ChatGPT
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · Claude
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · Google服务
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · Spotify
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · 影音流媒体
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · 电报消息
   type: select
+  lazy: true
   proxies:
   - 黑名单 · 代理模式
   - 黑名单 · 手动选择
 - name: 黑名单 · 广告拦截
   type: select
+  lazy: true
   proxies:
   - REJECT
   - DIRECT
 - name: 黑名单 · 漏网之鱼
   type: select
+  lazy: true
   proxies:
   - DIRECT
   - 黑名单 · 代理模式
 
 # 独立命名的规则集与原订阅合并，避免删除其其他功能依赖。
 rule-providers:
-  nyb-reject:
+  # AWAvenue 常见广告域名；保留 domain 压缩格式，不再加载大型全量广告库。
+  nyb-reject-lite:
     behavior: domain
     format: yaml
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    url: https://cdn.jsdelivr.net/gh/TG-Twilight/AWAvenue-Ads-Rule@main/Filters/AWAvenue-Ads-Rule-Clash.yaml
     interval: 86400
   nyb-private:
     behavior: domain
@@ -271,7 +285,7 @@ rules: #!replace
 - RULE-SET,nyb-telegramcidr,黑名单 · 电报消息,no-resolve
 - RULE-SET,nyb-private,DIRECT
 - RULE-SET,nyb-lancidr,DIRECT,no-resolve
-- RULE-SET,nyb-reject,黑名单 · 广告拦截
+- RULE-SET,nyb-reject-lite,黑名单 · 广告拦截
 - RULE-SET,nyb-direct,DIRECT
 - RULE-SET,nyb-gfw,黑名单 · 代理模式
 - RULE-SET,nyb-proxy,黑名单 · 代理模式
