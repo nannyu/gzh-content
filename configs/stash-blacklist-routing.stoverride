@@ -1,366 +1,275 @@
-name: "Stash 国内直连 · 黑名单代理"
+name: "Stash 国内直连 · 黑名单代理（修正版）"
 desc: |-
-  参考 Mac mini 的 Clash Verge 分流逻辑。
-  国内、局域网与未命中流量默认直连；GFW/Proxy 黑名单及指定服务走代理。
+  适用于 Stash 3.4.1；先关闭旧版覆写，仅启用本版。
+  保留原订阅 DNS、节点和策略组；国内及未命中流量默认直连。
+  修复失效规则源，显式服务例外优先于广告；各服务可直接选择节点。
 author: "Codex"
-version: "2026.08.11"
+version: "2026.09.06.1"
 
 mode: rule
-ipv6: false
 
-# Stash 移动端使用 2 个国内 DNS，兼顾耗电、国内 CDN 与抗污染。
-dns:
-  enable: true
-  ipv6: false
-  enhanced-mode: fake-ip
-  follow-rule: false
-  default-nameserver: #!replace
-    - 223.5.5.5
-    - 119.29.29.29
-  nameserver: #!replace
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  nameserver-policy: #!replace
-    "geosite:cn":
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
-    "+.bigmodel.cn": https://dns.alidns.com/dns-query
-    "+.feishu.cn": https://dns.alidns.com/dns-query
-    "+.larksuite.com": https://dns.alidns.com/dns-query
-    "+.feishuapp.cn": https://dns.alidns.com/dns-query
-    "+.xiaohongshu.com": https://dns.alidns.com/dns-query
-    "+.xhslink.com": https://dns.alidns.com/dns-query
-    "+.xhslink.cn": https://dns.alidns.com/dns-query
-    "+.xhscdn.com": https://dns.alidns.com/dns-query
-    "+.xhscdn.net": https://dns.alidns.com/dns-query
-  fake-ip-filter: #!replace
-    - localhost
-    - "+.lan"
-    - "+.local"
-    - "+.home.arpa"
-    - "+.in-addr.arpa"
-    - "+.ip6.arpa"
-    - "time.*.com"
-    - "time.*.gov"
-    - pool.ntp.org
-    - captive.apple.com
-    - "+.icloud.com"
-    - "+.icloud.com.cn"
-    - "+.mzstatic.com"
-    - "+.xiaohongshu.com"
-    - "+.xhslink.com"
-    - "+.xhslink.cn"
-    - "+.xhscdn.com"
-    - "+.xhscdn.net"
-    - "+.bigmodel.cn"
-    - "+.feishu.cn"
-    - "+.larksuite.com"
-    - "+.feishuapp.cn"
-    - "+.interactivebrokers.com"
-    - "+.ibkr.com"
-    - "+.ibllc.com"
+# 原订阅已验证可用：继承 DNS、IPv6、proxies、proxy-providers 和原有代理链。
+# 新组前缀防止覆盖订阅同名组；不使用 #!replace 删除原有策略组。
+# include-all 引用原订阅的全部节点及远程代理集，不包含任何订阅凭据。
+# 移除可能为空的地区过滤组；各服务展开后可直接选美国/日本等具体节点。
+# 基础订阅必须有可用节点；Stash 会将完全没有节点的组视作 DIRECT。
+proxy-groups:
+- name: 黑名单 · 代理模式
+  type: select
+  proxies:
+  - 黑名单 · 自动优选
+  include-all: true
+- name: 黑名单 · 自动优选
+  type: url-test
+  include-all: true
+  interval: 600
+  lazy: true
+- name: 黑名单 · AI开发
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · ChatGPT
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · Claude
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · Google服务
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · Spotify
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · 影音流媒体
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · 电报消息
+  type: select
+  proxies:
+  - 黑名单 · 代理模式
+  include-all: true
+- name: 黑名单 · 广告拦截
+  type: select
+  proxies:
+  - REJECT
+  - DIRECT
+- name: 黑名单 · 漏网之鱼
+  type: select
+  proxies:
+  - DIRECT
+  - 黑名单 · 代理模式
 
-# include-all 会自动引用当前配置里的全部节点及 proxy-providers，
-# 因而不需要把订阅地址或节点凭据写进本文件。
-proxy-groups: #!replace
-  - name: "代理模式"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "手动选择"
-      - DIRECT
-
-  - name: "🚀 自动优选"
-    type: url-test
-    include-all: true
-    interval: 600
-    lazy: true
-
-  - name: "手动选择"
-    type: select
-    include-all: true
-
-  - name: "美国节点"
-    type: url-test
-    include-all: true
-    filter: "(?i)(美国|US|United States|America|🇺🇸|美)"
-    interval: 600
-    lazy: true
-
-  - name: "日本节点"
-    type: url-test
-    include-all: true
-    filter: "(?i)(日本|JP|Japan|🇯🇵)"
-    interval: 600
-    lazy: true
-
-  - name: "澳洲节点"
-    type: url-test
-    include-all: true
-    filter: "(?i)(澳大利亚|澳洲|AU|Australia|🇦🇺)"
-    interval: 600
-    lazy: true
-
-  - name: "香港节点"
-    type: url-test
-    include-all: true
-    filter: "(?i)(香港|HK|Hong Kong|HongKong|🇭🇰)"
-    interval: 600
-    lazy: true
-
-  # 自动优选放在首位：即使订阅没有对应地区节点，也不会回落到 DIRECT。
-  - name: "AI开发"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "美国节点"
-      - "日本节点"
-      - "澳洲节点"
-      - "手动选择"
-
-  - name: "ChatGPT"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "美国节点"
-      - "澳洲节点"
-      - "日本节点"
-      - "手动选择"
-
-  - name: "Claude"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "美国节点"
-      - "澳洲节点"
-      - "日本节点"
-      - "手动选择"
-
-  - name: "Google服务"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "美国节点"
-      - "澳洲节点"
-      - "手动选择"
-
-  - name: "Spotify"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "香港节点"
-      - "手动选择"
-
-  - name: "影音流媒体"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "香港节点"
-      - "美国节点"
-      - "日本节点"
-      - "手动选择"
-
-  - name: "电报消息"
-    type: select
-    proxies:
-      - "🚀 自动优选"
-      - "手动选择"
-
-  - name: "广告拦截"
-    type: select
-    proxies:
-      - REJECT
-      - DIRECT
-
-  # 黑名单模式的关键：未命中规则默认 DIRECT，可在 Stash 中临时切换成代理。
-  - name: "漏网之鱼"
-    type: select
-    proxies:
-      - DIRECT
-      - "代理模式"
-
-rule-providers: #!replace
-  reject:
+# 独立命名的规则集与原订阅合并，避免删除其其他功能依赖。
+rule-providers:
+  nyb-reject:
     behavior: domain
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
     interval: 86400
-  private:
+  nyb-private:
     behavior: domain
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt
     interval: 86400
-  direct:
+  nyb-direct:
     behavior: domain
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt
     interval: 86400
-  lancidr:
+  nyb-lancidr:
     behavior: ipcidr
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt
     interval: 86400
-  gfw:
+  nyb-gfw:
     behavior: domain
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt
     interval: 86400
-  proxy:
+  nyb-proxy:
     behavior: domain
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt
     interval: 86400
-  github:
-    behavior: domain
+  nyb-github:
+    behavior: classical
     format: yaml
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/github.txt
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml
     interval: 86400
-  google:
-    behavior: domain
-    format: yaml
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt
-    interval: 86400
-  telegramcidr:
+  nyb-telegramcidr:
     behavior: ipcidr
     format: yaml
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
     interval: 86400
-  openai:
+  nyb-openai:
     behavior: classical
     format: yaml
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml
     interval: 86400
-  claude:
+  nyb-claude:
     behavior: classical
     format: yaml
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Claude/Claude.yaml
     interval: 86400
-  youtube:
+  nyb-youtube:
     behavior: classical
     format: yaml
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml
     interval: 86400
-  netflix:
+  nyb-netflix:
     behavior: classical
     format: yaml
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Netflix/Netflix.yaml
     interval: 86400
-  spotify:
+  nyb-spotify:
     behavior: classical
     format: yaml
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Spotify/Spotify.yaml
     interval: 86400
 
+# 只替换分流规则，明确保持黑名单默认直连语义。
+# 顺序：本地网络 → 显式服务/直连例外 → 服务集 → 私网 → 广告 → 国内 → 黑名单 → 默认。
 rules: #!replace
-  # Tailnet / 局域网优先直连；保留 Mac mini 脚本里的 Headscale 控制面例外。
-  - "IP-CIDR,100.64.0.0/10,DIRECT,no-resolve"
-  - "IP-CIDR6,fd7a:115c:a1e0::/48,DIRECT,no-resolve"
-  - "DOMAIN,t.nyxbits.com,代理模式"
-
-  # 广告与统计。
-  - "DOMAIN-SUFFIX,google-analytics.com,Google服务"
-  - "DOMAIN-SUFFIX,googletagservices.com,Google服务"
-  - "RULE-SET,reject,广告拦截"
-
-  # Claude。
-  - "DOMAIN-SUFFIX,claude.ai,Claude"
-  - "DOMAIN-SUFFIX,claude.com,Claude"
-  - "DOMAIN-SUFFIX,anthropic.com,Claude"
-  - "DOMAIN-SUFFIX,segment.io,Claude"
-  - "DOMAIN-SUFFIX,website-files.com,Claude"
-  - "DOMAIN-SUFFIX,intellimize.co,Claude"
-  - "DOMAIN-SUFFIX,amplitude.com,Claude"
-  - "RULE-SET,claude,Claude"
-
-  # 流媒体。
-  - "RULE-SET,spotify,Spotify"
-  - "RULE-SET,youtube,影音流媒体"
-  - "RULE-SET,netflix,影音流媒体"
-  - "DOMAIN-SUFFIX,xbookcn.net,影音流媒体"
-
-  # Google / Gemini。
-  - "DOMAIN-SUFFIX,gemini.google.com,Google服务"
-  - "DOMAIN-SUFFIX,generativeai.google.com,Google服务"
-  - "DOMAIN-SUFFIX,ai.google.dev,Google服务"
-  - "DOMAIN-SUFFIX,googleapis.com,Google服务"
-  - "DOMAIN-SUFFIX,googleusercontent.com,Google服务"
-  - "DOMAIN-SUFFIX,gstatic.com,Google服务"
-  - "DOMAIN-SUFFIX,googletagmanager.com,Google服务"
-  - "DOMAIN-SUFFIX,google.com,Google服务"
-  - "RULE-SET,google,Google服务"
-
-  # X / Grok / AI 开发。
-  - "DOMAIN-SUFFIX,x.com,AI开发"
-  - "DOMAIN-SUFFIX,x.ai,AI开发"
-  - "DOMAIN-SUFFIX,grok.com,AI开发"
-  - "DOMAIN-SUFFIX,playwright.dev,AI开发"
-  - "DOMAIN-SUFFIX,githubcopilot.com,AI开发"
-  - "DOMAIN-KEYWORD,antigravity,AI开发"
-  - "DOMAIN-SUFFIX,clawhub.ai,AI开发"
-  - "DOMAIN-SUFFIX,kiro.dev,AI开发"
-  - "DOMAIN-SUFFIX,kiro.aws.dev,AI开发"
-  - "DOMAIN-SUFFIX,nvidia.com,AI开发"
-  - "DOMAIN-SUFFIX,slack.com,AI开发"
-  - "DOMAIN-SUFFIX,githubusercontent.com,AI开发"
-  - "DOMAIN-SUFFIX,github.com,AI开发"
-  - "RULE-SET,github,AI开发"
-
-  # OpenAI 与 Telegram。
-  - "RULE-SET,openai,ChatGPT"
-  - "RULE-SET,telegramcidr,电报消息,no-resolve"
-
-  # Mac mini 脚本中的显式直连服务。
-  - "DOMAIN-SUFFIX,bigmodel.cn,DIRECT"
-  - "DOMAIN-SUFFIX,feishu.cn,DIRECT"
-  - "DOMAIN-SUFFIX,larksuite.com,DIRECT"
-  - "DOMAIN-SUFFIX,feishuapp.cn,DIRECT"
-  - "DOMAIN-SUFFIX,interactivebrokers.com,DIRECT"
-  - "DOMAIN-SUFFIX,ibllc.com,DIRECT"
-  - "DOMAIN-SUFFIX,ibkr.com,DIRECT"
-  - "DOMAIN-SUFFIX,ibkr.com.au,DIRECT"
-  - "DOMAIN-SUFFIX,ibkr.com.hk,DIRECT"
-  - "DOMAIN-SUFFIX,ibkr.pro,DIRECT"
-  - "DOMAIN-SUFFIX,office365.com,DIRECT"
-  - "DOMAIN-SUFFIX,office.com,DIRECT"
-  - "DOMAIN-SUFFIX,office.net,DIRECT"
-  - "DOMAIN-SUFFIX,microsoftonline.com,DIRECT"
-  - "DOMAIN-KEYWORD,onedrive,DIRECT"
-  - "DOMAIN-KEYWORD,sharepoint,DIRECT"
-  - "DOMAIN-SUFFIX,deepseek.com,DIRECT"
-  - "DOMAIN-SUFFIX,icloud.com,DIRECT"
-  - "DOMAIN-SUFFIX,icloud.com.cn,DIRECT"
-  - "DOMAIN-SUFFIX,mzstatic.com,DIRECT"
-  - "DOMAIN-SUFFIX,itunes.apple.com,DIRECT"
-  - "DOMAIN-SUFFIX,me.com,DIRECT"
-  - "DOMAIN-SUFFIX,update.microsoft.com,DIRECT"
-  - "DOMAIN-SUFFIX,windowsupdate.com,DIRECT"
-  - "DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT"
-  - "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT"
-  - "DOMAIN-SUFFIX,steamserver.net,DIRECT"
-  - "DOMAIN-SUFFIX,steamcontent.com,DIRECT"
-  - "DOMAIN-KEYWORD,steamcontent,DIRECT"
-  - "DOMAIN-SUFFIX,epicgames.com,DIRECT"
-  - "DOMAIN-SUFFIX,zoom.us,DIRECT"
-  - "DOMAIN-SUFFIX,zoom.com.cn,DIRECT"
-  - "DOMAIN-SUFFIX,webex.com,DIRECT"
-  - "DOMAIN-SUFFIX,xiaohongshu.com,DIRECT"
-  - "DOMAIN-SUFFIX,xhslink.com,DIRECT"
-  - "DOMAIN-SUFFIX,xhslink.cn,DIRECT"
-  - "DOMAIN-SUFFIX,xhscdn.com,DIRECT"
-  - "DOMAIN-SUFFIX,xhscdn.net,DIRECT"
-  - "IP-CIDR,63.86.0.0/16,DIRECT,no-resolve"
-  - "IP-CIDR,198.90.0.0/16,DIRECT,no-resolve"
-
-  # 私网、国内域名与国内 IP 优先直连。
-  - "RULE-SET,private,DIRECT"
-  - "RULE-SET,lancidr,DIRECT,no-resolve"
-  - "RULE-SET,direct,DIRECT"
-  - "GEOSITE,CN,DIRECT"
-
-  # 黑名单命中才走代理。
-  - "RULE-SET,gfw,代理模式"
-  - "RULE-SET,proxy,代理模式"
-  - "GEOIP,CN,DIRECT,no-resolve"
-
-  # 未命中默认直连，符合黑名单模式。
-  - "MATCH,漏网之鱼"
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+- IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+- IP-CIDR6,::1/128,DIRECT,no-resolve
+- IP-CIDR6,fc00::/7,DIRECT,no-resolve
+- IP-CIDR6,fe80::/10,DIRECT,no-resolve
+- IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+- IP-CIDR6,fd7a:115c:a1e0::/48,DIRECT,no-resolve
+- DOMAIN,t.nyxbits.com,黑名单 · 代理模式
+- DOMAIN-SUFFIX,google-analytics.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,googletagservices.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,claude.ai,黑名单 · Claude
+- DOMAIN-SUFFIX,claude.com,黑名单 · Claude
+- DOMAIN-SUFFIX,anthropic.com,黑名单 · Claude
+- DOMAIN-SUFFIX,segment.io,黑名单 · Claude
+- DOMAIN-SUFFIX,website-files.com,黑名单 · Claude
+- DOMAIN-SUFFIX,intellimize.co,黑名单 · Claude
+- DOMAIN-SUFFIX,amplitude.com,黑名单 · Claude
+- DOMAIN-SUFFIX,xbookcn.net,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,youtube.com,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,youtu.be,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,ytimg.com,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,googlevideo.com,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,youtubei.googleapis.com,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,netflix.com,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,nflxvideo.net,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,nflximg.net,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,nflxext.com,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,nflxso.net,黑名单 · 影音流媒体
+- DOMAIN-SUFFIX,openai.com,黑名单 · ChatGPT
+- DOMAIN-SUFFIX,chatgpt.com,黑名单 · ChatGPT
+- DOMAIN-SUFFIX,oaistatic.com,黑名单 · ChatGPT
+- DOMAIN-SUFFIX,oaiusercontent.com,黑名单 · ChatGPT
+- DOMAIN-SUFFIX,spotify.com,黑名单 · Spotify
+- DOMAIN-SUFFIX,scdn.co,黑名单 · Spotify
+- DOMAIN-SUFFIX,spotifycdn.com,黑名单 · Spotify
+- DOMAIN-SUFFIX,telegram.org,黑名单 · 电报消息
+- DOMAIN-SUFFIX,telegram.me,黑名单 · 电报消息
+- DOMAIN-SUFFIX,t.me,黑名单 · 电报消息
+- DOMAIN-SUFFIX,telesco.pe,黑名单 · 电报消息
+- DOMAIN-SUFFIX,githubassets.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,github.io,黑名单 · AI开发
+- DOMAIN-SUFFIX,github.dev,黑名单 · AI开发
+- DOMAIN-SUFFIX,githubapp.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,ghcr.io,黑名单 · AI开发
+- DOMAIN-SUFFIX,git.io,黑名单 · AI开发
+- DOMAIN-SUFFIX,twitter.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,twimg.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,t.co,黑名单 · AI开发
+- DOMAIN-SUFFIX,google.co.jp,黑名单 · Google服务
+- DOMAIN-SUFFIX,google.com.hk,黑名单 · Google服务
+- DOMAIN-SUFFIX,google.co.uk,黑名单 · Google服务
+- DOMAIN-SUFFIX,gvt1.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,gvt2.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,gemini.google.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,generativeai.google.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,ai.google.dev,黑名单 · Google服务
+- DOMAIN-SUFFIX,googleapis.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,googleusercontent.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,gstatic.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,googletagmanager.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,google.com,黑名单 · Google服务
+- DOMAIN-SUFFIX,x.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,x.ai,黑名单 · AI开发
+- DOMAIN-SUFFIX,grok.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,playwright.dev,黑名单 · AI开发
+- DOMAIN-SUFFIX,githubcopilot.com,黑名单 · AI开发
+- DOMAIN-KEYWORD,antigravity,黑名单 · AI开发
+- DOMAIN-SUFFIX,clawhub.ai,黑名单 · AI开发
+- DOMAIN-SUFFIX,kiro.dev,黑名单 · AI开发
+- DOMAIN-SUFFIX,kiro.aws.dev,黑名单 · AI开发
+- DOMAIN-SUFFIX,nvidia.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,slack.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,githubusercontent.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,github.com,黑名单 · AI开发
+- DOMAIN-SUFFIX,bigmodel.cn,DIRECT
+- DOMAIN-SUFFIX,feishu.cn,DIRECT
+- DOMAIN-SUFFIX,larksuite.com,DIRECT
+- DOMAIN-SUFFIX,feishuapp.cn,DIRECT
+- DOMAIN-SUFFIX,interactivebrokers.com,DIRECT
+- DOMAIN-SUFFIX,ibllc.com,DIRECT
+- DOMAIN-SUFFIX,ibkr.com,DIRECT
+- DOMAIN-SUFFIX,ibkr.com.au,DIRECT
+- DOMAIN-SUFFIX,ibkr.com.hk,DIRECT
+- DOMAIN-SUFFIX,ibkr.pro,DIRECT
+- DOMAIN-SUFFIX,office365.com,DIRECT
+- DOMAIN-SUFFIX,office.com,DIRECT
+- DOMAIN-SUFFIX,office.net,DIRECT
+- DOMAIN-SUFFIX,microsoftonline.com,DIRECT
+- DOMAIN-KEYWORD,onedrive,DIRECT
+- DOMAIN-KEYWORD,sharepoint,DIRECT
+- DOMAIN-SUFFIX,deepseek.com,DIRECT
+- DOMAIN-SUFFIX,icloud.com,DIRECT
+- DOMAIN-SUFFIX,icloud.com.cn,DIRECT
+- DOMAIN-SUFFIX,mzstatic.com,DIRECT
+- DOMAIN-SUFFIX,itunes.apple.com,DIRECT
+- DOMAIN-SUFFIX,me.com,DIRECT
+- DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+- DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+- DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+- DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
+- DOMAIN-SUFFIX,steamserver.net,DIRECT
+- DOMAIN-SUFFIX,steamcontent.com,DIRECT
+- DOMAIN-KEYWORD,steamcontent,DIRECT
+- DOMAIN-SUFFIX,epicgames.com,DIRECT
+- DOMAIN-SUFFIX,zoom.us,DIRECT
+- DOMAIN-SUFFIX,zoom.com.cn,DIRECT
+- DOMAIN-SUFFIX,webex.com,DIRECT
+- DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
+- DOMAIN-SUFFIX,xhslink.com,DIRECT
+- DOMAIN-SUFFIX,xhslink.cn,DIRECT
+- DOMAIN-SUFFIX,xhscdn.com,DIRECT
+- DOMAIN-SUFFIX,xhscdn.net,DIRECT
+- IP-CIDR,63.86.0.0/16,DIRECT,no-resolve
+- IP-CIDR,198.90.0.0/16,DIRECT,no-resolve
+- RULE-SET,nyb-spotify,黑名单 · Spotify
+- RULE-SET,nyb-youtube,黑名单 · 影音流媒体
+- RULE-SET,nyb-netflix,黑名单 · 影音流媒体
+- RULE-SET,nyb-openai,黑名单 · ChatGPT
+- RULE-SET,nyb-claude,黑名单 · Claude
+- RULE-SET,nyb-github,黑名单 · AI开发
+- RULE-SET,nyb-telegramcidr,黑名单 · 电报消息,no-resolve
+- RULE-SET,nyb-private,DIRECT
+- RULE-SET,nyb-lancidr,DIRECT,no-resolve
+- RULE-SET,nyb-reject,黑名单 · 广告拦截
+- RULE-SET,nyb-direct,DIRECT
+- RULE-SET,nyb-gfw,黑名单 · 代理模式
+- RULE-SET,nyb-proxy,黑名单 · 代理模式
+- GEOIP,CN,DIRECT,no-resolve
+- MATCH,黑名单 · 漏网之鱼
