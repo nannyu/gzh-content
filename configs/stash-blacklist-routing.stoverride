@@ -2,63 +2,67 @@ name: "Stash 国内直连 · 黑名单代理（修正版）"
 desc: |-
   适用于 Stash 3.4.1；先关闭旧版覆写，仅启用本版。
   保留原订阅 DNS、节点和策略组；国内及未命中流量默认直连。
-  修复失效规则源，显式服务例外优先于广告；各服务可直接选择节点。
+  修复策略组未跟随自动优选的问题；手动节点统一在手动选择组设置。
 author: "Codex"
-version: "2026.09.06.1"
+version: "2026.09.06.2"
 
 mode: rule
 
 # 原订阅已验证可用：继承 DNS、IPv6、proxies、proxy-providers 和原有代理链。
 # 新组前缀防止覆盖订阅同名组；不使用 #!replace 删除原有策略组。
 # include-all 引用原订阅的全部节点及远程代理集，不包含任何订阅凭据。
-# 移除可能为空的地区过滤组；各服务展开后可直接选美国/日本等具体节点。
+# Stash 3.4.1 实测：include-all 与 proxies 混用会丢失显式组引用，禁止混用。
+# 主组/服务组仅引用其他组；自动/手动组才使用 include-all。
 # 基础订阅必须有可用节点；Stash 会将完全没有节点的组视作 DIRECT。
 proxy-groups:
 - name: 黑名单 · 代理模式
   type: select
   proxies:
   - 黑名单 · 自动优选
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · 自动优选
   type: url-test
   include-all: true
   interval: 600
   lazy: true
+- name: 黑名单 · 手动选择
+  type: select
+  include-all: true
 - name: 黑名单 · AI开发
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · ChatGPT
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · Claude
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · Google服务
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · Spotify
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · 影音流媒体
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · 电报消息
   type: select
   proxies:
   - 黑名单 · 代理模式
-  include-all: true
+  - 黑名单 · 手动选择
 - name: 黑名单 · 广告拦截
   type: select
   proxies:
