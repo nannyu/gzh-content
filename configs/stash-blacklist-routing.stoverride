@@ -6,7 +6,7 @@ desc: |-
   手动节点统一在手动选择组设置；服务组默认跟随主组。
   国内应用、支付及银行优先直连；保留原通用规则。
 author: "Codex"
-version: "2026.10.07.3"
+version: "2026.10.07.4"
 
 mode: rule
 
@@ -15,14 +15,8 @@ mode: rule
 dns:
   follow-rule: false
   nameserver: #!replace
-    - https://223.5.5.5/dns-query
-    - https://doh.pub/dns-query
-  nameserver-policy:
-    '+.qq.com': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
-    '+.qpic.cn': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
-    '+.qlogo.cn': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
-    '+.weixinbridge.com': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
-    '+.servicewechat.com': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
+    - "https://223.5.5.5/dns-query"
+    - "https://doh.pub/dns-query"
 
 
 # 原订阅已验证可用：继承 IPv6、proxies、proxy-providers 和原有代理链；DNS 由本覆写修正。
