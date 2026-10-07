@@ -1,0 +1,14 @@
+name: "国内 DNS 修复（2026-10-07）"
+desc: "修复 Oracle2 配置的 DNS 超时；请启用本覆写。"
+version: "2026.10.07.3"
+dns:
+  follow-rule: false
+  nameserver: #!replace
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+  nameserver-policy:
+    '+.qq.com': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
+    '+.qpic.cn': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
+    '+.qlogo.cn': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
+    '+.weixinbridge.com': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
+    '+.servicewechat.com': [https://223.5.5.5/dns-query, https://doh.pub/dns-query]
