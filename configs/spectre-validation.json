@@ -1,0 +1,32 @@
+{
+  "version": "2026.10.07.1",
+  "rules": 139906,
+  "source_sha256": "d675b1f07c0a2660959d9b5c5b8706c65968c55a5fb65b32f159780eb5719cf9",
+  "output_sha256": "ef4aca6d97a68b907784d90c39c380e02ecf93e7eb12e9e0f773ab692418cd54",
+  "output_bytes": 4739918,
+  "final_policy": "DIRECT",
+  "skipped_rules": [
+    {
+      "provider": "nyb-spotify",
+      "rule": "PROCESS-NAME,com.spotify.music",
+      "reason": "Not emitted by the conservative Spectre text profile"
+    },
+    {
+      "provider": "nyb-netflix",
+      "rule": "PROCESS-NAME,com.netflix.mediaclient",
+      "reason": "Not emitted by the conservative Spectre text profile"
+    },
+    {
+      "provider": "nyb-openai",
+      "rule": "IP-ASN,20473",
+      "reason": "Not emitted by the conservative Spectre text profile"
+    }
+  ],
+  "device_import_verified": false,
+  "notes": [
+    "no-resolve options omitted",
+    "Exact duplicate rules removed",
+    "Named proxy groups mapped to PROXY; no node-selection groups",
+    "Advert blocking fixed to REJECT; fallback fixed to DIRECT"
+  ]
+}

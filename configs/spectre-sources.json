@@ -1,0 +1,80 @@
+{
+  "nyb-reject-lite": {
+    "url": "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/99b020c21853cbed56b90456399dad6bde842309/Filters/AWAvenue-Ads-Rule-Clash.yaml",
+    "sha256": "02824887ac3ba3dc7f527d02626cd5d7898976bd21b604820223574e9c1ee7d1",
+    "behavior": "domain",
+    "entries": 961
+  },
+  "nyb-private": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/3cfefdda0a7913680f32d475829f546b05138a33/private.txt",
+    "sha256": "3a04b128200ef8097d73b1496cbb23d24bc1e05d42fffb09f07c51699efb00b2",
+    "behavior": "domain",
+    "entries": 130
+  },
+  "nyb-direct": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/3cfefdda0a7913680f32d475829f546b05138a33/direct.txt",
+    "sha256": "e1664a48aa5ffc62bd4941787db59446335cc933d3c39ff083e4000ae9c5993b",
+    "behavior": "domain",
+    "entries": 111353
+  },
+  "nyb-lancidr": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/3cfefdda0a7913680f32d475829f546b05138a33/lancidr.txt",
+    "sha256": "82920b241dc328f1dc99849cf733ed8675a00a4ee0bdf64c892b332dfb7e1e2e",
+    "behavior": "ipcidr",
+    "entries": 18
+  },
+  "nyb-gfw": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/3cfefdda0a7913680f32d475829f546b05138a33/gfw.txt",
+    "sha256": "3a34f1f5d1283bf59281ece3410319142abed48386d42b9eb36cc183c7fe26c8",
+    "behavior": "domain",
+    "entries": 4429
+  },
+  "nyb-proxy": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/3cfefdda0a7913680f32d475829f546b05138a33/proxy.txt",
+    "sha256": "ffdcd451ecc235942bace95ae311054df72359702fb92f6e9cd3b0885c58d506",
+    "behavior": "domain",
+    "entries": 27140
+  },
+  "nyb-github": {
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/124a5ab5504726bad72915baf3a6ca7e2c92ffcd/rule/Clash/GitHub/GitHub.yaml",
+    "sha256": "a2641ce2f10857831b600623f97d354e6f8db7b20dff175c5313c2c46e0b6867",
+    "behavior": "classical",
+    "entries": 31
+  },
+  "nyb-telegramcidr": {
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/3cfefdda0a7913680f32d475829f546b05138a33/telegramcidr.txt",
+    "sha256": "328fca88c675763111c7f7585ec504e5c21ab9afb7a8ce6df33b7ac01b8a3ee0",
+    "behavior": "ipcidr",
+    "entries": 12
+  },
+  "nyb-openai": {
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/124a5ab5504726bad72915baf3a6ca7e2c92ffcd/rule/Clash/OpenAI/OpenAI.yaml",
+    "sha256": "cf66c50e7cfbe0aa0e9e249bfa8897d152ae35b38ab6db2936ef62860b7b61b4",
+    "behavior": "classical",
+    "entries": 35
+  },
+  "nyb-claude": {
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/124a5ab5504726bad72915baf3a6ca7e2c92ffcd/rule/Clash/Claude/Claude.yaml",
+    "sha256": "ef21df39005b17dbd84aa65a47162b36fb5e72754cd32384146474ed488df482",
+    "behavior": "classical",
+    "entries": 3
+  },
+  "nyb-youtube": {
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/124a5ab5504726bad72915baf3a6ca7e2c92ffcd/rule/Clash/YouTube/YouTube.yaml",
+    "sha256": "2f84cc9d35c8559ebea4c43aa9b30bb43b36313d70684f23a359f1acabb879bb",
+    "behavior": "classical",
+    "entries": 183
+  },
+  "nyb-netflix": {
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/124a5ab5504726bad72915baf3a6ca7e2c92ffcd/rule/Clash/Netflix/Netflix.yaml",
+    "sha256": "cfb49b76fabc96887c7da7336ecea9066727c1489d25d677baa4f4e7a79a05f3",
+    "behavior": "classical",
+    "entries": 38
+  },
+  "nyb-spotify": {
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/124a5ab5504726bad72915baf3a6ca7e2c92ffcd/rule/Clash/Spotify/Spotify.yaml",
+    "sha256": "e74599390a87e5ed6da929f80be9c173cf3017e41b8f69362c2028d248875a79",
+    "behavior": "classical",
+    "entries": 30
+  }
+}
